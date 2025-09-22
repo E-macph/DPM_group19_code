@@ -34,8 +34,10 @@ def collect_color_sensor_data():
     except BaseException:  # capture all exceptions including KeyboardInterrupt (Ctrl-C)
         pass
     finally:
-        print("Done collecting US distance samples")
+        print("Done collecting color distance samples")
         output_file.close()
-        reset_brick()  # Turn off everything on the brick's hardware, and reset it exit()
+        reset_brick()  # Turn off everything on the brick's hardware, and reset it
+        exit()
 
-if __name__ == "__main__": collect_color_sensor_data()
+if __name__ == "__main__":
+    collect_color_sensor_data()
