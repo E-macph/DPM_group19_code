@@ -4,6 +4,8 @@
 
 import utils
 from utils.brick import EV3ColorSensor, wait_ready_sensors, TouchSensor, reset_brick
+from time import sleep
+
 DELAY_sec = 0.01
 COLOR_SENSOR_DATA_FILE = "../data_analysis/color_sensor.csv"
 
@@ -17,14 +19,14 @@ def collect_color_sensor_data():
     "Collect color sensor data."
     try:
         output_file = open(COLOR_SENSOR_DATA_FILE, "w")
-        while not TOUCH_SENSOR.is_pressed():
+        while not Touch_sensor.is_pressed():
             pass  # do nothing while waiting for first button press #
         print("Touch sensor pressed")
         sleep(1)
         print("Starting to collect Color distance samples")
 
-        while TOUCH_SENSOR.is_pressed():
-            color_data = EV3ColorSensor.get_value()  # Float value in centimeters 0, capped to 255 cm
+        while Touch_sensor.is_pressed():
+            color_data = Color_sensor.get_value()  # Float value in centimeters 0, capped to 255 cm
 
             if color_data is not None:  # If None is given, then data collection failed that time
                 print(color_data)
