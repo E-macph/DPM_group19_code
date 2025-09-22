@@ -30,7 +30,7 @@ def collect_color_sensor_data():
             print("in color data list")
             if Touch_sensor.is_pressed():
                 print("1")
-                rgb_list = color.get_rgb()  # Float value in centimeters 0, capped to 255 cm
+                rgb_list = Color_Sensor.get_rgb()  # Float value in centimeters 0, capped to 255 cm
                 print("2")
                 delay(0.5)
                 print(rgb_list)
