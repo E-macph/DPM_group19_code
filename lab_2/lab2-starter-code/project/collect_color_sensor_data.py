@@ -22,14 +22,15 @@ def collect_color_sensor_data():
         while not Touch_sensor.is_pressed():
             print("looping..")
             pass  # do nothing while waiting for first button press #
+        color_data = None
         print("Touch sensor pressed")
         sleep(1)
         print("Starting to collect Color distance samples")
 
-        while not Touch_sensor.is_pressed():
+        while not Touch_sensor.is_pressed() or color_data is None:
             if (Touch_sensor.is_pressed()):
                 print("after touch sensor is pressed")
-                color_data = Color_Sensor.get_value(1)  # Float value in centimeters 0, capped to 255 cm
+                color_data = Color_Sensor.get_value()  # Float value in centimeters 0, capped to 255 cm
 
                 if color_data is not None:  # If None is given, then data collection failed that time
                     print(color_data)
