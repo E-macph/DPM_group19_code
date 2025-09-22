@@ -35,10 +35,11 @@ def collect_color_sensor_data():
                 if rgb_list is not None:  # If None is given, then data collection failed that time
                     print(rgb_list)
                     output_file.append(f"{rgb_list}\n")
+                    color_data += 1
+                    rgb_list = None
+
                 sleep(DELAY_SEC)
-                color_data += 1
-            else:
-                pass
+
 
 
     except BaseException:  # capture all exceptions including KeyboardInterrupt (Ctrl-C)
