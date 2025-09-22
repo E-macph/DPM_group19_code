@@ -3,7 +3,7 @@
 # Add your imports here, if any
 
 import utils
-from utils.brick import EV3ColorSensor, wait_ready_sensors, TouchSensor
+from utils.brick import EV3ColorSensor, wait_ready_sensors, TouchSensor, reset_brick
 DELAY_sec = 0.01
 COLOR_SENSOR_DATA_FILE = "../data_analysis/color_sensor.csv"
 
