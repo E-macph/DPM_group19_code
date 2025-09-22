@@ -26,7 +26,7 @@ def collect_color_sensor_data():
         sleep(1)
         print("Starting to collect Color distance samples")
 
-        for i in range(9):
+        for i in range(10):
             while not Touch_sensor.is_pressed() or color_data is None:
                 if (Touch_sensor.is_pressed()):
                     rgb_list = color.get_rgb()  # Float value in centimeters 0, capped to 255 cm
