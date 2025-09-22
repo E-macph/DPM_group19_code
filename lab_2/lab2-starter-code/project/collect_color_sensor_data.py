@@ -12,11 +12,11 @@ COLOR_SENSOR_DATA_FILE = "../data_analysis/color_sensor.csv"
 # complete this based on your hardware setup
 Color_Sensor = EV3ColorSensor(1)
 Touch_sensor = TouchSensor(2)
-color_data = 0
 
 wait_ready_sensors(True) # Input True to see what the robot is trying to initialize! False to be silent.
 
 def collect_color_sensor_data():
+    color_data = 0
     "Collect color sensor data."
     output_file = open(COLOR_SENSOR_DATA_FILE, "a")
     while not Touch_sensor.is_pressed():
