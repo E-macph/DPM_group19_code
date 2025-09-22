@@ -21,15 +21,16 @@ def collect_color_sensor_data():
         output_file = open(COLOR_SENSOR_DATA_FILE, "w")
         while not Touch_sensor.is_pressed():
             pass  # do nothing while waiting for first button press #
-        color_data = None
+        color_data = 0
         print("Touch sensor pressed")
         sleep(1)
         print("Starting to collect Color distance samples")
 
         for i in range(10):
-            while not Touch_sensor.is_pressed() or color_data is None:
+            while not Touch_sensor.is_pressed() or color_data < 10:
                 if (Touch_sensor.is_pressed()):
                     rgb_list = color.get_rgb()  # Float value in centimeters 0, capped to 255 cm
+                    delay(0.5)
                     print(rgb_list)
 
                     if rgb_list is not None:  # If None is given, then data collection failed that time
@@ -38,6 +39,7 @@ def collect_color_sensor_data():
                     sleep(DELAY_SEC)
                 else:
                     pass
+                color_data += 1
 
 
     except BaseException:  # capture all exceptions including KeyboardInterrupt (Ctrl-C)
