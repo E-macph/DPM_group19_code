@@ -28,22 +28,13 @@ def collect_color_sensor_data():
     print("Starting to collect Color distance samples")
 
     while color_data < 10:
-        print("in color data list")
         if Touch_sensor.is_pressed():
-            print("1")
             rgb_list = Color_Sensor.get_rgb()
-            print("2")
             print(rgb_list)
-            print("3")
 
             output_file.write(f"{rgb_list}\n")
             color_data += 1
-            sleep(1)
-
-
-
-
-
+            sleep(2)
 
     print("Done collecting color distance samples")
     output_file.close()
