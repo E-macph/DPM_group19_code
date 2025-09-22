@@ -23,7 +23,7 @@ def collect_color_sensor_data():
         sleep(1)
         print("Starting to collect Color distance samples")
 
-        while not TOUCH_SENSOR.is_pressed():
+        while TOUCH_SENSOR.is_pressed():
             color_data = EV3ColorSensor.get_value()  # Float value in centimeters 0, capped to 255 cm
 
             if color_data is not None:  # If None is given, then data collection failed that time
