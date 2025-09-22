@@ -27,6 +27,7 @@ def collect_color_sensor_data():
         print("Starting to collect Color distance samples")
 
         while color_data < 10:
+            print("in color data list")
             if Touch_sensor.is_pressed():
                 rgb_list = color.get_rgb()  # Float value in centimeters 0, capped to 255 cm
                 delay(0.5)
@@ -43,9 +44,11 @@ def collect_color_sensor_data():
 
 
     except BaseException:  # capture all exceptions including KeyboardInterrupt (Ctrl-C)
+        print("Exception caught" + BaseException)
         pass
     finally:
         print("Done collecting color distance samples")
+        print(color_data)
         output_file.close()
         reset_brick()  # Turn off everything on the brick's hardware, and reset it
         exit()
