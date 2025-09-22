@@ -38,4 +38,4 @@ def collect_color_sensor_data():
         output_file.close()
         reset_brick()  # Turn off everything on the brick's hardware, and reset it exit()
 
-    if __name__ == "__main__": collect_color_sensor_data()
+if __name__ == "__main__": collect_color_sensor_data()
