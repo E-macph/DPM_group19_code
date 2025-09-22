@@ -17,7 +17,7 @@ wait_ready_sensors(True) # Input True to see what the robot is trying to initial
 
 def collect_color_sensor_data():
     color_data = 0
-    rgb_list = []
+
     "Collect color sensor data."
     output_file = open(COLOR_SENSOR_DATA_FILE, "a")
     while not Touch_sensor.is_pressed():
@@ -31,7 +31,7 @@ def collect_color_sensor_data():
         print("in color data list")
         if Touch_sensor.is_pressed():
             print("1")
-            rgb_list = Color_Sensor.get_rgb()  # Float value in centimeters 0, capped to 255 cm
+            rgb_list = Color_Sensor.get_rgb()
             print("2")
             print(rgb_list)
             print("3")
