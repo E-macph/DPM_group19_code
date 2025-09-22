@@ -30,11 +30,12 @@ def collect_color_sensor_data():
         while not Touch_sensor.is_pressed() or color_data is None:
             if (Touch_sensor.is_pressed()):
                 print("after touch sensor is pressed")
-                color_data = Color_Sensor.get_value()  # Float value in centimeters 0, capped to 255 cm
+                rgb_list = color.get_rgb()  # Float value in centimeters 0, capped to 255 cm
+                print(rgb_list)
 
-                if color_data is not None:  # If None is given, then data collection failed that time
-                    print(color_data)
-                    output_file.write(f"{color_data}\n")
+                if rgb_list is not None:  # If None is given, then data collection failed that time
+                    print(rgb_list)
+                    output_file.write(f"{rgb_list}\n")
                 sleep(DELAY_SEC)
             else:
                 pass
