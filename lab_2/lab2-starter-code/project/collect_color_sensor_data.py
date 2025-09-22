@@ -38,7 +38,7 @@ def collect_color_sensor_data():
 
             output_file.write(f"{rgb_list}\n")
             color_data += 1
-            time.sleep(1)
+            sleep(1)
 
 
 
