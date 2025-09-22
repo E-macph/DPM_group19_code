@@ -32,7 +32,7 @@ def collect_color_sensor_data():
                 print("1")
                 rgb_list = Color_Sensor.get_rgb()  # Float value in centimeters 0, capped to 255 cm
                 print("2")
-                delay(0.5)
+                sleep(0.5)
                 print(rgb_list)
                 print("3")
 
