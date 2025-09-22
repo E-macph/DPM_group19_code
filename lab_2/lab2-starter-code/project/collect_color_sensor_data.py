@@ -6,7 +6,7 @@ import utils
 from utils.brick import EV3ColorSensor, wait_ready_sensors, TouchSensor, reset_brick
 from time import sleep
 
-DELAY_sec = 0.01
+DELAY_SEC = 0.01
 COLOR_SENSOR_DATA_FILE = "../data_analysis/color_sensor.csv"
 
 # complete this based on your hardware setup
@@ -26,7 +26,7 @@ def collect_color_sensor_data():
         print("Starting to collect Color distance samples")
 
         while Touch_sensor.is_pressed():
-            color_data = Color_sensor.get_value(1)  # Float value in centimeters 0, capped to 255 cm
+            color_data = Color_Sensor.get_value(1)  # Float value in centimeters 0, capped to 255 cm
 
             if color_data is not None:  # If None is given, then data collection failed that time
                 print(color_data)
@@ -39,6 +39,7 @@ def collect_color_sensor_data():
         print("Done collecting color distance samples")
         output_file.close()
         reset_brick()  # Turn off everything on the brick's hardware, and reset it
+        close(COLOR_SENSOR_DATA_FILE)
         exit()
 
 if __name__ == "__main__":
