@@ -39,7 +39,6 @@ def collect_color_sensor_data():
         print("Done collecting color distance samples")
         output_file.close()
         reset_brick()  # Turn off everything on the brick's hardware, and reset it
-        close(COLOR_SENSOR_DATA_FILE)
         exit()
 
 if __name__ == "__main__":
