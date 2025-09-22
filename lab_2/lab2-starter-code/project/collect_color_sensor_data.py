@@ -2,6 +2,7 @@
 # """ This test is used to collect data from the color sensor. It must be run on the robot. """
 # Add your imports here, if any
 
+import utils
 from utils.brick import EV3ColorSensor, wait_ready_sensors, TouchSensor
 DELAY_sec = 0.01
 COLOR_SENSOR_DATA_FILE = "../data_analysis/color_sensor.csv"
