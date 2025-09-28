@@ -14,7 +14,7 @@ TOUCH_SENSOR = TouchSensor(1)
 
 wait_ready_sensors() # Note: Touch sensors actually have no initialization time
 
-
+SOUND.set_volume(80)
 def play_sound():
     "Play a single note."
     SOUND.play()
@@ -24,7 +24,9 @@ def play_sound():
 def play_sound_on_button_press():
     "In an infinite loop, play a single note when the touch sensor is pressed."
     try:
-        ...
+        while True:
+            if TOUCH_SENSOR.is_pressed():
+                play_sound()
     except BaseException:  # capture all exceptions including KeyboardInterrupt (Ctrl-C)
         exit()
 
