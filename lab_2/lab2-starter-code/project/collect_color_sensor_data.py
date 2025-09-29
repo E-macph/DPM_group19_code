@@ -16,7 +16,7 @@ Touch_sensor = TouchSensor(2)
 wait_ready_sensors(True) # Input True to see what the robot is trying to initialize! False to be silent.
 
 def collect_color_sensor_data():
-    color_data = 0
+    color_data = 0           # Counting snapshots taken by the sensor
 
     "Collect color sensor data."
     output_file = open(COLOR_SENSOR_DATA_FILE, "a")
@@ -27,14 +27,14 @@ def collect_color_sensor_data():
     sleep(1)
     print("Starting to collect Color distance samples")
 
-    while color_data < 10:
+    while color_data < 10:                     # if more samples are needed, enter
         if Touch_sensor.is_pressed():
             rgb_list = Color_Sensor.get_rgb()
             print(rgb_list)
 
             output_file.write(f"{rgb_list}\n")
-            color_data += 1
-            sleep(0.5)
+            color_data += 1                      # add to snapshot count
+            sleep(0.5)                           # wait to ensure button can be released before next snapshot
 
     print("Done collecting color distance samples")
     output_file.close()
