@@ -37,10 +37,10 @@ print("Hardware objects created.")
 # --- STEP B: NOW that hardware is awake, initialize SOUND objects ---
 print("Initializing sound objects...")
 try:
-    NOTE_C = sound.Sound(duration=1, pitch="A1", volume=95)
-    NOTE_D = sound.Sound(duration=1, pitch="B2", volume=95)
-    NOTE_E = sound.Sound(duration=1, pitch="C3", volume=95)
-    NOTE_F = sound.Sound(duration=1, pitch="D4", volume=95)
+    NOTE_C = sound.Sound(duration=0.5, pitch="A3", volume=95)
+    NOTE_D = sound.Sound(duration=0.5, pitch="B4", volume=95)
+    NOTE_E = sound.Sound(duration=0.5, pitch="C3", volume=95)
+    NOTE_F = sound.Sound(duration=0.5, pitch="D4", volume=95)
 
     print("Sound objects initialized successfully.")
 except Exception as e:
@@ -99,9 +99,10 @@ try:
                 NOTE_F.play()
                 print("playing F")
             
-        time.sleep(0.5)
+            time.sleep(0.4)
 
 
+       
 finally:
     print("Cleaning up and resetting hardware...")
     reset_brick()
