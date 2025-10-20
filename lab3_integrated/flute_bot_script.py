@@ -10,6 +10,7 @@ import time
 import threading
 from utils.sound import Sound
 from utils.brick import EV3UltrasonicSensor, TouchSensor, Motor, wait_ready_sensors, reset_brick
+import brickpi3
 
 # ==============================================================================
 # 2. CONFIGURATION (Unchanged)
@@ -18,14 +19,19 @@ ULTRASONIC_PORT = 2
 DRUM_TOGGLE_PORT = 3
 EMERGENCY_STOP_PORT = 4
 DRUM_MOTOR_PORT = "A"
-DRUM_POWER = 70
-BEAT_INTERVAL = 0.5
+DRUM_MOTOR_PORT = brickpi3.BrickPi3.PORT_A
+DRUM_POWER_LIMIT = 70
+DRUM_SPEED_LIMIT = 720
+DRUM_ANGLE_VARIATION = 90  # How many degrees the drumstick moves forward and back.
+DRUM_PAUSE_DURATION = 0.5  # How long to wait between thumps.
+
 
 # ==============================================================================
 # 3. INITIALIZATION
 # ==============================================================================
 # --- THE FIX: Create a single, shared Lock for the sound hardware ---
 # This is the "key to the doorway."
+BP = brickpi3.BrickPi3()
 sound_lock = threading.Lock()
 
 # --- The rest of the initialization is the correct order we found before ---
@@ -48,6 +54,17 @@ emergency_stop_button = TouchSensor(EMERGENCY_STOP_PORT)
 drum_motor = Motor(DRUM_MOTOR_PORT)
 print("Hardware objects created.")
 
+# CHANGE 3: Perform the specific, low-level motor setup from your sample code.
+print("Setting up motor for position control...")
+try:
+    BP.offset_motor_encoder(DRUM_MOTOR_PORT, BP.get_motor_encoder(DRUM_MOTOR_PORT))
+    BP.set_motor_limits(DRUM_MOTOR_PORT, DRUM_POWER_LIMIT, DRUM_SPEED_LIMIT)
+    BP.set_motor_power(DRUM_MOTOR_PORT, 0)
+    print("Motor setup complete.")
+except IOError as error:
+    print(f"FATAL ERROR: Could not set up motor. {error}")
+    exit()
+
 print("Waiting for sensors to be ready...")
 wait_ready_sensors(True)
 print("Hardware ready.")
@@ -59,30 +76,35 @@ stop_event = threading.Event()
 
 
 def drum_thread_function():
-    """The drum thread. This function does not need the lock, as it never plays sound."""
+    """The drum thread, now using ONLY the BP object."""
     print("Drum thread started.")
     drumming_active = False
     last_button_state = False
-    last_beat_time = 0
 
     while not stop_event.is_set():
-        # This thread's logic is perfect and does not need to change.
         drum_toggle_pressed = drum_toggle_button.is_pressed()
         if drum_toggle_pressed and not last_button_state:
             drumming_active = not drumming_active
             print(f"Drumming {'ON' if drumming_active else 'OFF'}")
-            if not drumming_active: drum_motor.set_power(0)
+            # FIX 3: If drumming is turned off, use BP to stop the motor.
+            if not drumming_active:
+                BP.set_motor_power(DRUM_MOTOR_PORT, 0)
         last_button_state = drum_toggle_pressed
 
-        if drumming_active and time.time() - last_beat_time > BEAT_INTERVAL:
-            drum_motor.set_power(DRUM_POWER);
-            time.sleep(0.08)
-            drum_motor.set_power(-DRUM_POWER);
-            time.sleep(0.08)
-            drum_motor.set_power(0)
-            last_beat_time = time.time()
+        if drumming_active:
+            try:
+                BP.set_motor_position_relative(DRUM_MOTOR_PORT, DRUM_ANGLE_VARIATION)
+                time.sleep(DRUM_PAUSE_DURATION)
 
-        time.sleep(0.02)
+                if not drumming_active: continue
+
+                BP.set_motor_position_relative(DRUM_MOTOR_PORT, -DRUM_ANGLE_VARIATION)
+                time.sleep(DRUM_PAUSE_DURATION)
+            except IOError as error:
+                print(f"Drum motor error: {error}")
+        else:
+            time.sleep(0.02)
+
 
 
 def flute_thread_function():
@@ -131,4 +153,5 @@ finally:
 
     print("Cleaning up and resetting hardware...")
     reset_brick()
+    BP.reset_all()
     print("Program terminated.")
