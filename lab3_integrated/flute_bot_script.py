@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-ECSE211 Lab 3 - A thread-safe solution using a Lock.
+ECSE211 Lab 3 - Group 19
 """
 
 # ==============================================================================
@@ -13,7 +13,7 @@ from utils.brick import EV3UltrasonicSensor, TouchSensor, Motor, wait_ready_sens
 import brickpi3
 
 # ==============================================================================
-# 2. CONFIGURATION (Unchanged)
+# 2. CONFIGURATION
 # ==============================================================================
 ULTRASONIC_PORT = 2
 DRUM_TOGGLE_PORT = 3
@@ -22,22 +22,20 @@ DRUM_MOTOR_PORT = "A"
 DRUM_MOTOR_PORT = brickpi3.BrickPi3.PORT_A
 DRUM_POWER_LIMIT = 70
 DRUM_SPEED_LIMIT = 720
-DRUM_ANGLE_VARIATION = 90  # How many degrees the drumstick moves forward and back.
-DRUM_PAUSE_DURATION = 0.5  # How long to wait between thumps.
+DRUM_ANGLE_VARIATION = 90
+DRUM_PAUSE_DURATION = 0.5
 
 
 # ==============================================================================
 # 3. INITIALIZATION
 # ==============================================================================
-# --- THE FIX: Create a single, shared Lock for the sound hardware ---
-# This is the "key to the doorway."
+
 BP = brickpi3.BrickPi3()
 sound_lock = threading.Lock()
 
-# --- The rest of the initialization is the correct order we found before ---
 print("Initializing sound objects...")
 try:
-    # Your duration of 10 is fine. A long duration is robust.
+
     NOTE_C = Sound(duration=1, pitch="A#1", volume=100)
     NOTE_D = Sound(duration=1, pitch="A#2", volume=100)
     NOTE_E = Sound(duration=1, pitch="A#3", volume=100)
@@ -54,7 +52,7 @@ emergency_stop_button = TouchSensor(EMERGENCY_STOP_PORT)
 drum_motor = Motor(DRUM_MOTOR_PORT)
 print("Hardware objects created.")
 
-# CHANGE 3: Perform the specific, low-level motor setup from your sample code.
+
 print("Setting up motor for position control...")
 try:
     BP.offset_motor_encoder(DRUM_MOTOR_PORT, BP.get_motor_encoder(DRUM_MOTOR_PORT))
@@ -76,19 +74,21 @@ stop_event = threading.Event()
 
 
 def drum_thread_function():
-    """The drum thread, now using ONLY the BP object."""
+
     print("Drum thread started.")
     drumming_active = False
     last_button_state = False
 
     while not stop_event.is_set():
         drum_toggle_pressed = drum_toggle_button.is_pressed()
+
         if drum_toggle_pressed and not last_button_state:
             drumming_active = not drumming_active
             print(f"Drumming {'ON' if drumming_active else 'OFF'}")
-            # FIX 3: If drumming is turned off, use BP to stop the motor.
+
             if not drumming_active:
                 BP.set_motor_power(DRUM_MOTOR_PORT, 0)
+
         last_button_state = drum_toggle_pressed
 
         if drumming_active:
@@ -108,7 +108,6 @@ def drum_thread_function():
 
 
 def flute_thread_function():
-    """The flute thread. This function MUST use the lock to prevent crashes."""
     print("Flute thread started.")
 
     while not stop_event.is_set():
@@ -131,7 +130,7 @@ def flute_thread_function():
 
 
 # ==============================================================================
-# 5. MAIN PROGRAM (Unchanged)
+# 5. MAIN PROGRAM
 # ==============================================================================
 try:
     drum_chef = threading.Thread(target=drum_thread_function)
