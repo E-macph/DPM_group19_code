@@ -15,7 +15,7 @@ import brickpi3
 # ==============================================================================
 # 2. CONFIGURATION (Unchanged)
 # ==============================================================================
-ULTRASONIC_PORT = 2
+ULTRASONIC_PORT = 1
 DRUM_TOGGLE_PORT = 3
 EMERGENCY_STOP_PORT = 4
 DRUM_MOTOR_PORT = "A"
