@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 #from utils import brick
-from utils.brick import Motor, reset_brick, wait_ready_sensors
+from utils.brick import Motor, reset_brick, wait_ready_sensors, EV3ColorSensor
 import brickpi3
 import time
 RIGHT_WHEEL = Motor("C")
@@ -12,7 +12,7 @@ speed = 20
 COLOR_SAMPLING = 0.02
 MOTOR_SAMPLING = 0.05
 
-
+C_sens = EV3ColorSensor(1)
 
 wait_ready_sensors(True)
 RIGHT_WHEEL.reset_encoder()
@@ -26,21 +26,30 @@ ON_LINE_DRIFT = 1                      # 1 for to the right, 0 for to the left
 while True:
     try:
         
+        
+        
 
         time.sleep(0.1)
 
         while True:
-            color_int = get_new_color()
-            while (color_int == 6):
+            def get_new_color():
+                
+                time.sleep(0.1)
+                r, g, b = C_sens.get_rbg()
+                intensity = cr + g + b
+                color = classify.classify_it(r, g, b, intensity)
+            
+            color = get_new_color()
+            while (color == "black"):
                 RIGHT_WHEEL.set_power(CORRECT_POWER)
                 LEFT_WHEEL.set_power(CORRECT_POWER*0.5)
-                color_int = get_new_color()
+                color = get_new_color()
                 
             time.sleep(MOTOR_SAMPLING)
-            while (color_int == 1):
+            while ("white" == 1):
                 RIGHT_WHEEL.set_power(CORRECT_POWER*0.5)
                 LEFT_WHEEL.set_power(CORRECT_POWER)
-                color_int = get_new_color()
+                color = get_new_color()
 
 
 
