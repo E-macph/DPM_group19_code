@@ -8,7 +8,7 @@ RIGHT_WHEEL = Motor("C")
 LEFT_WHEEL = Motor("B")
 POWER_LIMIT = 30
 OFF_POWER = 0
-CORRECT_POWER = 10
+CORRECT_POWER = 30
 speed = 20
 COLOR_SAMPLING = 0.02
 MOTOR_SAMPLING = 0.05
@@ -33,7 +33,7 @@ while True:
         time.sleep(0.1)
         def get_new_color():
 
-            time.sleep(0.1)
+            time.sleep(0.05)
             r, g, b = C_sens.get_rgb()
             intensity = r + g + b
             color = classify.classify_it(r, g, b, intensity)
@@ -43,12 +43,12 @@ while True:
             color = get_new_color()
             while (color == "black"):
                 RIGHT_WHEEL.set_power(CORRECT_POWER)
-                LEFT_WHEEL.set_power(CORRECT_POWER*0.5)
+                LEFT_WHEEL.set_power(CORRECT_POWER*0.25)
                 color = get_new_color()
                 
             time.sleep(MOTOR_SAMPLING)
             while ("white" == color):
-                RIGHT_WHEEL.set_power(CORRECT_POWER*0.5)
+                RIGHT_WHEEL.set_power(CORRECT_POWER*0.25)
                 LEFT_WHEEL.set_power(CORRECT_POWER)
                 color = get_new_color()
 
