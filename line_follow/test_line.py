@@ -30,14 +30,13 @@ while True:
         
 
         time.sleep(0.1)
+        def get_new_color():
 
+            time.sleep(0.1)
+            r, g, b = C_sens.get_rbg()
+            intensity = cr + g + b
+            color = classify.classify_it(r, g, b, intensity)
         while True:
-            def get_new_color():
-                
-                time.sleep(0.1)
-                r, g, b = C_sens.get_rbg()
-                intensity = cr + g + b
-                color = classify.classify_it(r, g, b, intensity)
             
             color = get_new_color()
             while (color == "black"):
@@ -46,7 +45,7 @@ while True:
                 color = get_new_color()
                 
             time.sleep(MOTOR_SAMPLING)
-            while ("white" == 1):
+            while ("white" == color):
                 RIGHT_WHEEL.set_power(CORRECT_POWER*0.5)
                 LEFT_WHEEL.set_power(CORRECT_POWER)
                 color = get_new_color()
