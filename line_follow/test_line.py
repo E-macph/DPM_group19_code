@@ -3,6 +3,7 @@
 from utils.brick import Motor, reset_brick, wait_ready_sensors, EV3ColorSensor
 import brickpi3
 import time
+import classify
 RIGHT_WHEEL = Motor("C")
 LEFT_WHEEL = Motor("B")
 POWER_LIMIT = 30
@@ -33,8 +34,8 @@ while True:
         def get_new_color():
 
             time.sleep(0.1)
-            r, g, b = C_sens.get_rbg()
-            intensity = cr + g + b
+            r, g, b = C_sens.get_rgb()
+            intensity = r + g + b
             color = classify.classify_it(r, g, b, intensity)
         while True:
             
