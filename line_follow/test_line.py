@@ -37,6 +37,7 @@ while True:
             r, g, b = C_sens.get_rgb()
             intensity = r + g + b
             color = classify.classify_it(r, g, b, intensity)
+            return color
         while True:
             
             color = get_new_color()
