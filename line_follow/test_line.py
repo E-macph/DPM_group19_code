@@ -1,26 +1,30 @@
 #!/usr/bin/python3
 #from utils import brick
-from utils.brick import Motor, reset_brick, wait_ready_sensors, EV3ColorSensor
+from utils.brick import Motor, reset_brick, wait_ready_sensors, EV3ColorSensor, EV3UltrasonicSensor
 import brickpi3
 import time
 import classify
+import room_search
+
 RIGHT_WHEEL = Motor("C")
 LEFT_WHEEL = Motor("B")
-POWER_LIMIT = 30
-OFF_POWER = 0
-CORRECT_POWER = 30
-speed = 20
-COLOR_SAMPLING = 0.02
-MOTOR_SAMPLING = 0.05
+
+QUICK_POWER = 30
+CAREFUL_POWER = 10
+Quick_SLOW_WHEEL = QUICK_POWER*(0.7)
+Careful_SLOW_WHEEL = CAREFUL_POWER*(-0.3)
+
+CORRECT_POWER = 0
+CAREFUL_SAMPLING = 0.02
+QUICK_SAMPLING = 0.05
 
 C_sens = EV3ColorSensor(1)
+U_sens = EV3UltrasonicSensor(3)
 
 wait_ready_sensors(True)
+
 RIGHT_WHEEL.reset_encoder()
 LEFT_WHEEL.reset_encoder()
-
-RIGHT_WHEEL.set_limits(power=POWER_LIMIT)
-LEFT_WHEEL.set_limits(power=POWER_LIMIT)
 
 ON_LINE_DRIFT = 1                      # 1 for to the right, 0 for to the left
 
@@ -30,7 +34,7 @@ while True:
         
         
 
-        time.sleep(0.1)
+        time.sleep(0.01)
         def get_new_color():
 
             time.sleep(0.05)
@@ -41,17 +45,31 @@ while True:
         while True:
             
             color = get_new_color()
-            while (color == "black"):
-                RIGHT_WHEEL.set_power(CORRECT_POWER)
-                LEFT_WHEEL.set_power(CORRECT_POWER*0.25)
-                color = get_new_color()
-                
-            time.sleep(MOTOR_SAMPLING)
-            while ("white" == color):
-                RIGHT_WHEEL.set_power(CORRECT_POWER*0.25)
-                LEFT_WHEEL.set_power(CORRECT_POWER)
-                color = get_new_color()
+            distance = U_sens.get_value()
+            if (distance < 50 or (distance > 80)):
+                CORRECT_POWER = CAREFUL_POWER
+                SLOW_WHEEL = Careful_SLOW_WHEEL
+            else:
+                CORRECT_POWER = QUICK_POWER
+                SLOW_WHEEL = Quick_SLOW_WHEEL
 
+            if (color == "black"):
+                RIGHT_WHEEL.set_power(CORRECT_POWER)
+                LEFT_WHEEL.set_power(SLOW_WHEEL)
+                
+            if ("white" == color):
+                RIGHT_WHEEL.set_power(SLOW_WHEEL)
+                LEFT_WHEEL.set_power(CORRECT_POWER)
+
+
+            if (color == "orange"):
+                time.sleep(0.1)
+                RIGHT_WHEEL.set_power(20)
+                LEFT_WHEEL.set_power(10)
+                color = get_new_color()
+                if (color == "yellow"):
+                    room_search.room_search()
+            
 
 
 
