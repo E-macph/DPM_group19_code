@@ -12,7 +12,7 @@ LEFT_WHEEL = Motor("B")
 QUICK_POWER = 30
 CAREFUL_POWER = 20
 Quick_SLOW_WHEEL = QUICK_POWER*(0.7)
-Careful_SLOW_WHEEL = CAREFUL_POWER*(-0.4)
+Careful_SLOW_WHEEL = CAREFUL_POWER*(-0.3)
 
 CORRECT_POWER = 0
 CAREFUL_SAMPLING = 0.02
@@ -47,7 +47,7 @@ while True:
             
             color = get_new_color()
             distance = U_sens.get_value()
-            if (distance < 50 or (distance > 80)):
+            if (25 < distance < 50 or (96 > distance > 85)):
                 CORRECT_POWER = CAREFUL_POWER
                 SLOW_WHEEL = Careful_SLOW_WHEEL
             else:
