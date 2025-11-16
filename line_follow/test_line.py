@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 #from utils import brick
-from utils.brick import Motor, reset_brick, wait_ready_sensors, EV3ColorSensor, EV3UltrasonicSensor
+from utils.brick import Motor, reset_brick, wait_ready_sensors, EV3ColorSensor, EV3UltrasonicSensor, EV3TouchSensor
 import brickpi3
 import time
 import classify
@@ -19,6 +19,7 @@ CAREFUL_SAMPLING = 0.02
 QUICK_SAMPLING = 0.05
 
 C_sens = EV3ColorSensor(1)
+T_sens = EV3TouchSensor(2)
 U_sens = EV3UltrasonicSensor(3)
 
 wait_ready_sensors(True)
@@ -30,9 +31,9 @@ ON_LINE_DRIFT = 1                      # 1 for to the right, 0 for to the left
 
 while True:
     try:
-        
-        
-        
+        if (T_sens.is_pressed()):
+            reset_brick()
+            exit
 
         time.sleep(0.01)
         def get_new_color():
