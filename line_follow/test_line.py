@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 #from utils import brick
-from utils.brick import Motor, reset_brick, wait_ready_sensors, EV3ColorSensor, EV3UltrasonicSensor, EV3TouchSensor
+from utils.brick import Motor, reset_brick, wait_ready_sensors, EV3ColorSensor, EV3UltrasonicSensor, TouchSensor
 import brickpi3
 import time
 import classify
@@ -19,7 +19,7 @@ CAREFUL_SAMPLING = 0.02
 QUICK_SAMPLING = 0.05
 
 C_sens = EV3ColorSensor(1)
-T_sens = EV3TouchSensor(2)
+T_sens = TouchSensor(2)
 U_sens = EV3UltrasonicSensor(3)
 
 wait_ready_sensors(True)
