@@ -15,7 +15,7 @@ def classify_it(r_avg, g_avg, b_avg, intensity):
     WB = math.sqrt(math.pow((W_B[0]-r_avg/intensity), 2)+math.pow((W_B[1]-g_avg/intensity), 2)+math.pow((W_B[2]-b_avg/intensity), 2))
     g = math.sqrt(math.pow((GREEN[0]-r_avg/intensity), 2)+math.pow((GREEN[1]-g_avg/intensity), 2)+math.pow((GREEN[2]-b_avg/intensity), 2))
     r = math.sqrt(math.pow((RED[0]-r_avg/intensity), 2)+math.pow((RED[1]-g_avg/intensity), 2)+math.pow((RED[2]-b_avg/intensity), 2))
-    print("y: ", y, "o: ", o, "b: ", b, "WB: ", WB)
+    #print("y: ", y, "o: ", o, "b: ", b, "WB: ", WB)
 
     if (y < o and y < b and y < WB and y < g and y < r):
         return "yellow"
