@@ -8,7 +8,7 @@ def room_search():
     LEFT_WHEEL = Motor("B")
     POWER_LIMIT = 30
     OFF_POWER = 0
-    CORRECT_POWER = 20
+    CORRECT_POWER = 25
     speed = 20
     COLOR_SAMPLING = 0.02
     MOTOR_SAMPLING = 0.05
@@ -18,6 +18,7 @@ def room_search():
     wait_ready_sensors(True)
     RIGHT_WHEEL.reset_encoder()
     LEFT_WHEEL.reset_encoder()
+    Mulitiplier = -1
 
     RIGHT_WHEEL.set_limits(power=POWER_LIMIT)
     LEFT_WHEEL.set_limits(power=POWER_LIMIT)
@@ -25,7 +26,7 @@ def room_search():
     ON_LINE_DRIFT = 1
 
     def get_new_color():
-        time.sleep(0.1)
+        time.sleep(0.01)
         r, g, b = C_sens.get_rgb()
         intensity = r + g + b
         color = classify.classify_it(r, g, b, intensity)
@@ -35,6 +36,7 @@ def room_search():
         #move foward and right a bit
         #then drop package
         #then back and around package
+        print("dropping package")
         time.sleep(0.1)
         RIGHT_WHEEL.set_power(CORRECT_POWER)
         LEFT_WHEEL.set_power(CORRECT_POWER * 0.6)
@@ -57,40 +59,55 @@ def room_search():
         if (color == "red"):
             back_out()
 
-        while(color == "orange"):
-            sleep(0.5)
-            RIGHT_WHEEL.set_power(CORRECT_POWER)
-            LEFT_WHEEL.set_power(CORRECT_POWER)
-            sleep(0.1)
-            RIGHT_WHEEL.set_power(OFF_POWER)
-            LEFT_WHEEL.set_power(OFF_POWER)
-            color = get_new_color()
+#        while(color == "orange"):
+ #           sleep(0.5)
+  #          RIGHT_WHEEL.set_power(CORRECT_POWER)
+   #         LEFT_WHEEL.set_power(CORRECT_POWER)
+    #        sleep(0.1)
+     #       RIGHT_WHEEL.set_power(OFF_POWER)
+      #      LEFT_WHEEL.set_power(OFF_POWER)
+       #     color = get_new_color()
+        def sensitive_green_check():
+            boolean = False
+            for i in range(50):
+                time.sleep(0.015)
+                if (get_new_color() == "green"):
+                    boolean = True
+                else:
+                    continue
+            return boolean
 
-        while (color == "yellow" and counter < 7):
-            color = get_new_color()
-            if (color == "green"):
-                green_color = True
-            RIGHT_WHEEL.set_power(-CORRECT_POWER *0.5)
-            LEFT_WHEEL.set_power(CORRECT_POWER * 0.5)
-            sleep(0.75)
-            color = get_new_color()
-            if (color == "green"):
-                green_color = True
+        while (color == "yellow" and counter < 7 and green_color == False):
+            
+            RIGHT_WHEEL.set_power(-CORRECT_POWER *0.5*Multiplier)
+            LEFT_WHEEL.set_power(CORRECT_POWER * 0.5*Multiplier)
+            
+            green_color = sensitive_green_check()
+
+
             RIGHT_WHEEL.set_power(CORRECT_POWER)
             LEFT_WHEEL.set_power(CORRECT_POWER)
-            sleep(0.75)
-            color = get_new_color()
-            if (color == "green"):
-                green_color = True
+            
+            if (green_color != True):
+                green_color = sensitive_green_check()
+            else:
+                sleep(0.75)
+
+
             RIGHT_WHEEL.set_power(-CORRECT_POWER)
             LEFT_WHEEL.set_power(-CORRECT_POWER)
-            sleep(0.75)
-            color = get_new_color()
-            if (color == "green"):
-                green_color = True
+            
+            if (green_color != True):
+                green_color = sensitive_green_check()
+            else:
+                sleep(0.75)
+            
+                
             counter += 1
 
         if (green_color == True):
+            RIGHT_WHEEL.set_power(0)
+            LEFT_WHEEL.set_power(0)
             package_orientation()
             sleep(0.3)
             
@@ -104,12 +121,11 @@ def room_search():
                 RIGHT_WHEEL.set_power(-CORRECT_POWER)
                 LEFT_WHEEL.set_power(-CORRECT_POWER)
                 first_time = 0
+                time.sleep(1)
         
-            time.sleep(0.02)
+            time.sleep(0.01)
             RIGHT_WHEEL.set_power(-CORRECT_POWER)
             LEFT_WHEEL.set_power(-CORRECT_POWER*0.3)
-            
-            time.sleep(0.05)
             color = get_new_color()
 
         exit
