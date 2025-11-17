@@ -2,10 +2,9 @@ from utils.brick import Motor, reset_brick, wait_ready_sensors, EV3ColorSensor
 import brickpi3
 import time
 import classify
-import threading
+from Final_code import drop_package
 
 def room_search():
-
     RIGHT_WHEEL = Motor("C")
     LEFT_WHEEL = Motor("B")
     POWER_LIMIT = 30
@@ -47,84 +46,54 @@ def room_search():
         RIGHT_WHEEL.set_power(CORRECT_POWER * 0.5)
         LEFT_WHEEL.set_power(CORRECT_POWER, 0.2)
 
-    def continuous_test_function():
-        while True:
-            time.sleep(0.02)  # Test runs every 1/50 seconds
-            color = get_new_color()
-            if (color == "orange"):
-                package_orientation()
-                break
-
     def main_application_code(): #room search algorithm
-        RIGHT_WHEEL.set_power(-CORRECT_POWER *0.5)
-        LEFT_WHEEL.set_power(CORRECT_POWER * 0.5)
-        RIGHT_WHEEL.set_power(CORRECT_POWER)
-        LEFT_WHEEL.set_power(CORRECT_POWER)
-        RIGHT_WHEEL.set_power(-CORRECT_POWER)
-        LEFT_WHEEL.set_power(-CORRECT_POWER)
-
-        RIGHT_WHEEL.set_power(CORRECT_POWER * 0.5)
-        LEFT_WHEEL.set_power(-CORRECT_POWER * 0.5)
-        RIGHT_WHEEL.set_power(CORRECT_POWER)
-        LEFT_WHEEL.set_power(CORRECT_POWER)
-        RIGHT_WHEEL.set_power(-CORRECT_POWER)
-        LEFT_WHEEL.set_power(-CORRECT_POWER)
-
-        RIGHT_WHEEL.set_power(CORRECT_POWER * 0.5)
-        LEFT_WHEEL.set_power(-CORRECT_POWER * 0.5)
-        RIGHT_WHEEL.set_power(CORRECT_POWER)
-        LEFT_WHEEL.set_power(CORRECT_POWER)
-        RIGHT_WHEEL.set_power(-CORRECT_POWER)
-        LEFT_WHEEL.set_power(-CORRECT_POWER)
-
-        RIGHT_WHEEL.set_power(CORRECT_POWER * 0.5)
-        LEFT_WHEEL.set_power(-CORRECT_POWER * 0.5)
-        RIGHT_WHEEL.set_power(CORRECT_POWER)
-        LEFT_WHEEL.set_power(CORRECT_POWER)
-        RIGHT_WHEEL.set_power(-CORRECT_POWER)
-        LEFT_WHEEL.set_power(-CORRECT_POWER)
-
-        RIGHT_WHEEL.set_power(CORRECT_POWER * 0.5)
-        LEFT_WHEEL.set_power(-CORRECT_POWER * 0.5)
-        RIGHT_WHEEL.set_power(CORRECT_POWER)
-        LEFT_WHEEL.set_power(CORRECT_POWER)
-        RIGHT_WHEEL.set_power(-CORRECT_POWER)
-        LEFT_WHEEL.set_power(-CORRECT_POWER)
-
-        RIGHT_WHEEL.set_power(CORRECT_POWER * 0.5)
-        LEFT_WHEEL.set_power(-CORRECT_POWER * 0.5)
-        RIGHT_WHEEL.set_power(CORRECT_POWER)
-        LEFT_WHEEL.set_power(CORRECT_POWER)
-        RIGHT_WHEEL.set_power(-CORRECT_POWER)
-        LEFT_WHEEL.set_power(-CORRECT_POWER)
-
-        RIGHT_WHEEL.set_power(CORRECT_POWER * 0.5)
-        LEFT_WHEEL.set_power(-CORRECT_POWER * 0.5)
-        RIGHT_WHEEL.set_power(CORRECT_POWER)
-        LEFT_WHEEL.set_power(CORRECT_POWER)
-        RIGHT_WHEEL.set_power(-CORRECT_POWER)
-        LEFT_WHEEL.set_power(-CORRECT_POWER)
-
-        RIGHT_WHEEL.set_power(-CORRECT_POWER)
-        LEFT_WHEEL.set_power(-CORRECT_POWER * 0.5)
-
+        counter = 0
         color = get_new_color()
+        green_color = False
+
+        while(color == "orange"):
+            sleep(0.5)
+            RIGHT_WHEEL.set_power(CORRECT_POWER)
+            LEFT_WHEEL.set_power(CORRECT_POWER)
+            sleep(0.1)
+            RIGHT_WHEEL.set_power(OFF_POWER)
+            LEFT_WHEEL.set_power(OFF_POWER)
+            color = get_new_color()
+
+        while (color == "yellow" and counter < 7):
+            color = get_new_color()
+            if (color == "green"):
+                green_color = True
+            RIGHT_WHEEL.set_power(-CORRECT_POWER *0.5)
+            LEFT_WHEEL.set_power(CORRECT_POWER * 0.5)
+            sleep(0.4)
+            color = get_new_color()
+            if (color == "green"):
+                green_color = True
+            RIGHT_WHEEL.set_power(CORRECT_POWER)
+            LEFT_WHEEL.set_power(CORRECT_POWER)
+            sleep(0.4)
+            color = get_new_color()
+            if (color == "green"):
+                green_color = True
+            RIGHT_WHEEL.set_power(-CORRECT_POWER)
+            LEFT_WHEEL.set_power(-CORRECT_POWER)
+            sleep(0.4)
+            color = get_new_color()
+            if (color == "green"):
+                green_color = True
+            counter += 1
+
+        if (green_color == True):
+            package_orientation()
+            sleep(0.3)
 
         while (color != "black"):
             time.sleep(0.02) #Test runs every 1/50 seconds
-            RIGHT_WHEEL.set_power(-CORRECT_POWER * 0.3)
-            LEFT_WHEEL.set_power(-CORRECT_POWER)
+            RIGHT_WHEEL.set_power(-CORRECT_POWER)
+            LEFT_WHEEL.set_power(-CORRECT_POWER * 0.5)
             color = get_new_color()
 
-        return color
-
-    test_thread = threading.Thread(target=continuous_test_function, daemon=True)
-    # daemon=True ensures the thread exits when the main program exits
-
-    # Start the test thread
-    test_thread.start()
-
-    # Run the main application code
     main_application_code()
 
     print("Main application finished.")

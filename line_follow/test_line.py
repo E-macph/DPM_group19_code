@@ -47,7 +47,7 @@ while True:
             
             color = get_new_color()
             distance = U_sens.get_value()
-            if ((25 < distance < 50) or (96 > distance > 85) or (distance < 20)):
+            if ((37.4 < distance < 46.2) or (95.4 > distance > 83.8) or (distance < 22)):
                 CORRECT_POWER = CAREFUL_POWER
                 SLOW_WHEEL = Careful_SLOW_WHEEL
             else:
@@ -62,17 +62,13 @@ while True:
                 RIGHT_WHEEL.set_power(SLOW_WHEEL)
                 LEFT_WHEEL.set_power(CORRECT_POWER)
 
-
             if (color == "orange"):
                 time.sleep(0.1)
-                RIGHT_WHEEL.set_power(20)
-                LEFT_WHEEL.set_power(10)
-                color = get_new_color()
-                if (color == "yellow"):
-                    room_search.room_search()
-            
-
-
+                RIGHT_WHEEL.set_power(0)
+                LEFT_WHEEL.set_power(0)
+                time.sleep(1)
+                RIGHT_WHEEL.set_position_relative(250)
+                LEFT_WHEEL.set_position_relative(250)
 
     except Exception as e:
         if (isinstance(e, KeyboardInterrupt)):
