@@ -8,7 +8,7 @@ def room_search():
     LEFT_WHEEL = Motor("B")
     POWER_LIMIT = 30
     OFF_POWER = 0
-    CORRECT_POWER = 35
+    CORRECT_POWER = 25
     speed = 20
     COLOR_SAMPLING = 0.02
     MOTOR_SAMPLING = 0.05
@@ -67,7 +67,7 @@ def room_search():
      #       RIGHT_WHEEL.set_power(OFF_POWER)
       #      LEFT_WHEEL.set_power(OFF_POWER)
        #     color = get_new_color()
-        def sensitive_green_check(right_pow, left_pow):
+        def sensitive_green_check():
             boolean = False
             for i in range(50):
                 time.sleep(0.015)
@@ -77,7 +77,7 @@ def room_search():
                     continue
             return boolean
 
-        while (color == "yellow" and counter < 7 and green_color = False):
+        while (color == "yellow" and counter < 7 and green_color == False):
             
             RIGHT_WHEEL.set_power(-CORRECT_POWER *0.5*Multiplier)
             LEFT_WHEEL.set_power(CORRECT_POWER * 0.5*Multiplier)
