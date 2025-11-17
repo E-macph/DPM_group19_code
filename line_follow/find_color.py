@@ -38,7 +38,7 @@ while True:
         r, g, b = C_sens.get_rgb()
         i = r+g+b
         time.sleep(0.5)
-        print("\nR: ", r/i, "\nG: ", g/i, "\nB: ", b/i)
+        print("\nR: ", r/i, "\nG: ", g/i, "\nB: ", b/i, "\nI: ", i)
         
         
         print(classify.classify_it(r, g, b, i))
