@@ -9,10 +9,10 @@ import room_search
 RIGHT_WHEEL = Motor("C")
 LEFT_WHEEL = Motor("B")
 
-QUICK_POWER = 35
-CAREFUL_POWER = 25
-Quick_SLOW_WHEEL = QUICK_POWER*(0.7)
-Careful_SLOW_WHEEL = CAREFUL_POWER*(-0.3)
+QUICK_POWER = 33
+CAREFUL_POWER = 21
+Quick_SLOW_WHEEL = QUICK_POWER*(0.6)
+Careful_SLOW_WHEEL = CAREFUL_POWER*(-0.2)
 
 CORRECT_POWER = 0
 CAREFUL_SAMPLING = 0.02
@@ -38,7 +38,7 @@ while True:
         time.sleep(0.01)
         def get_new_color():
 
-            time.sleep(0.04)
+            time.sleep(0.02)
             r, g, b = C_sens.get_rgb()
             intensity = r + g + b
             color = classify.classify_it(r, g, b, intensity)
@@ -69,6 +69,11 @@ while True:
                 time.sleep(1)
                 RIGHT_WHEEL.set_position_relative(250)
                 LEFT_WHEEL.set_position_relative(250)
+
+                color = get_new_color()
+                if (color == "yellow"):
+                    room_search.room_search()
+
 
     except Exception as e:
         if (isinstance(e, KeyboardInterrupt)):
