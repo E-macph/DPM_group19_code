@@ -13,8 +13,3 @@ def drop_package():
     time.sleep(0.5)
 
 
-drop_package()
-time.sleep(0.5)
-drop_package()
-time.sleep(0.5)
-
