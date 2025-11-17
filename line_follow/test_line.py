@@ -48,7 +48,7 @@ while True:
             color = get_new_color()
             distance = U_sens.get_value()
 #            if ((25 < distance < 50) or (96 > distance > 85) or (distance < 20)):
-            if ((33 < distance < 39) or (75 > distance > 87) or (distance < 18)):
+            if ((37.4 < distance < 46.2) or (95.4 > distance > 83.8) or (distance < 22)):
                 CORRECT_POWER = CAREFUL_POWER
                 SLOW_WHEEL = Careful_SLOW_WHEEL
             else:
