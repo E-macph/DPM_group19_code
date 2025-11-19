@@ -71,6 +71,12 @@ while True:
 
                 color = get_new_color()
                 if (color == "yellow"):
+                    RIGHT_WHEEL.set_power(CORRECT_POWER)
+                    LEFT_WHEEL.set_power(CORRECT_POWER * .7)
+                    time.sleep(0.35)
+                    RIGHT_WHEEL.set_power(0)
+                    LEFT_WHEEL.set_power(0)
+                    time.sleep(5)
                     room_search.room_search()
                 elif (color == "red"):
                     RIGHT_WHEEL.set_power(-CORRECT_POWER)
