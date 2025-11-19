@@ -41,6 +41,8 @@ def room_search():
         RIGHT_WHEEL.set_power(CORRECT_POWER)
         LEFT_WHEEL.set_power(CORRECT_POWER * 0.6)
         time.sleep(0.3)
+        RIGHT_WHEEL.set_power(OFF_POWER)
+        LEFT_WHEEL.set_power(OFF_POWER)
         drop_package.drop_package()
         time.sleep(0.5)
         RIGHT_WHEEL.set_power(-CORRECT_POWER * 0.75)
@@ -84,7 +86,6 @@ def room_search():
             
             green_color = sensitive_green_check()
 
-
             RIGHT_WHEEL.set_power(CORRECT_POWER)
             LEFT_WHEEL.set_power(CORRECT_POWER)
             
@@ -93,7 +94,6 @@ def room_search():
             else:
                 sleep(0.75)
 
-
             RIGHT_WHEEL.set_power(-CORRECT_POWER)
             LEFT_WHEEL.set_power(-CORRECT_POWER)
             
@@ -101,8 +101,7 @@ def room_search():
                 green_color = sensitive_green_check()
             else:
                 sleep(0.75)
-            
-                
+
             counter += 1
 
         if (green_color == True):
