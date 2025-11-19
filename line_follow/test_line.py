@@ -5,6 +5,7 @@ import brickpi3
 import time
 import classify
 import room_search
+import room_search_1
 
 RIGHT_WHEEL = Motor("C")
 LEFT_WHEEL = Motor("B")
@@ -12,7 +13,7 @@ LEFT_WHEEL = Motor("B")
 QUICK_POWER = 33
 CAREFUL_POWER = 25
 Quick_SLOW_WHEEL = QUICK_POWER*(0.7)
-Careful_SLOW_WHEEL = CAREFUL_POWER*(-0.5)
+Careful_SLOW_WHEEL = CAREFUL_POWER*(-0.45)
 
 CORRECT_POWER = 0
 CAREFUL_SAMPLING = 0.02
@@ -65,19 +66,16 @@ while True:
             if (color == "orange"):
                 RIGHT_WHEEL.set_power(0)
                 LEFT_WHEEL.set_power(0)
-                time.sleep(0.2)
+                time.sleep(0.6)
                 RIGHT_WHEEL.set_position_relative(50)
                 LEFT_WHEEL.set_position_relative(50)
 
                 color = get_new_color()
                 if (color == "yellow"):
-                    RIGHT_WHEEL.set_power(CORRECT_POWER)
-                    LEFT_WHEEL.set_power(CORRECT_POWER * .7)
-                    time.sleep(0.35)
                     RIGHT_WHEEL.set_power(0)
                     LEFT_WHEEL.set_power(0)
-                    time.sleep(5)
-                    room_search.room_search()
+                    time.sleep(0.2)
+                    room_search_1.room_search()
                 elif (color == "red"):
                     RIGHT_WHEEL.set_power(-CORRECT_POWER)
                     LEFT_WHEEL.set_power(CORRECT_POWER)
