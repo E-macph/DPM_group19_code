@@ -40,7 +40,7 @@ def room_search():
         time.sleep(0.1)
         RIGHT_WHEEL.set_power(CORRECT_POWER)
         LEFT_WHEEL.set_power(CORRECT_POWER * 0.6)
-        time.sleep(0.3)
+        time.sleep(0.35)
         RIGHT_WHEEL.set_power(OFF_POWER)
         LEFT_WHEEL.set_power(OFF_POWER)
         drop_package.drop_package()
@@ -61,14 +61,6 @@ def room_search():
         if (color == "red"):
             back_out()
 
-#        while(color == "orange"):
- #           sleep(0.5)
-  #          RIGHT_WHEEL.set_power(CORRECT_POWER)
-   #         LEFT_WHEEL.set_power(CORRECT_POWER)
-    #        sleep(0.1)
-     #       RIGHT_WHEEL.set_power(OFF_POWER)
-      #      LEFT_WHEEL.set_power(OFF_POWER)
-       #     color = get_new_color()
         def sensitive_green_check():
             boolean = False
             for i in range(50):
@@ -109,24 +101,25 @@ def room_search():
             LEFT_WHEEL.set_power(0)
             package_orientation()
             sleep(0.3)
-            
+
         back_out()
 
     def back_out():
         first_time = 1
         while (color != "black"):
-            if (first_time == 1):    
-                time.sleep(0.02) #Test runs every 1/50 seconds
+            if (first_time == 1):
+                RIGHT_WHEEL.set_power(CORRECT_POWER)
+                LEFT_WHEEL.set_power(-CORRECT_POWER)
+                time.sleep(0.3)
                 RIGHT_WHEEL.set_power(-CORRECT_POWER)
                 LEFT_WHEEL.set_power(-CORRECT_POWER)
                 first_time = 0
-                time.sleep(1)
+                time.sleep(0.7)
         
             time.sleep(0.01)
             RIGHT_WHEEL.set_power(-CORRECT_POWER)
-            LEFT_WHEEL.set_power(-CORRECT_POWER*0.3)
+            LEFT_WHEEL.set_power(-CORRECT_POWER*0.4)
             color = get_new_color()
-
         exit
 
     main_application_code()

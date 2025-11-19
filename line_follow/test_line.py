@@ -10,9 +10,9 @@ RIGHT_WHEEL = Motor("C")
 LEFT_WHEEL = Motor("B")
 
 QUICK_POWER = 33
-CAREFUL_POWER = 23
-Quick_SLOW_WHEEL = QUICK_POWER*(0.6)
-Careful_SLOW_WHEEL = CAREFUL_POWER*(-0.45)
+CAREFUL_POWER = 25
+Quick_SLOW_WHEEL = QUICK_POWER*(0.7)
+Careful_SLOW_WHEEL = CAREFUL_POWER*(-0.5)
 
 CORRECT_POWER = 0
 CAREFUL_SAMPLING = 0.02
@@ -63,16 +63,19 @@ while True:
                 LEFT_WHEEL.set_power(CORRECT_POWER)
 
             if (color == "orange"):
-                time.sleep(0.1)
                 RIGHT_WHEEL.set_power(0)
                 LEFT_WHEEL.set_power(0)
-                time.sleep(1)
+                time.sleep(0.2)
                 RIGHT_WHEEL.set_position_relative(50)
                 LEFT_WHEEL.set_position_relative(50)
 
                 color = get_new_color()
                 if (color == "yellow"):
                     room_search.room_search()
+                elif (color == "red"):
+                    RIGHT_WHEEL.set_power(-CORRECT_POWER)
+                    LEFT_WHEEL.set_power(CORRECT_POWER)
+                    time.sleep(0.6)
 
     except Exception as e:
         if (isinstance(e, KeyboardInterrupt)):
