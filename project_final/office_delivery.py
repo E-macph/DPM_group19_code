@@ -1,11 +1,10 @@
 from utils.brick import Motor, reset_brick, wait_ready_sensors, EV3ColorSensor, TouchSensor
-import brickpi3
 import time
-import classify
-import drop_package
-import sound
+import color_classifier
+import package_dropper
+from utils.sound import Sound
 
-NOTE_DROPPED = sound.Sound(duration=0.5, pitch="D", volume=100)
+NOTE_DROPPED = Sound(duration=0.5, pitch="D", volume=100)
 
 def room_search():
     RIGHT_WHEEL = Motor("C")
@@ -34,7 +33,7 @@ def room_search():
         time.sleep(0.01)
         r, g, b = C_sens.get_rgb()
         intensity = r + g + b
-        color = classify.classify_it(r, g, b, intensity)
+        color = color_classifier.classify_it(r, g, b, intensity)
         return color
     
     def check_input(input_color):
@@ -99,7 +98,7 @@ def room_search():
             exit()
         RIGHT_WHEEL.set_power(0)
         LEFT_WHEEL.set_power(0)
-        drop_package.drop_package()
+        package_dropper.drop_package()
         NOTE_DROPPED.play()
         NOTE_DROPPED.wait_done()
         goout = 1

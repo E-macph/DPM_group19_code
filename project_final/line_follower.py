@@ -1,13 +1,9 @@
 #!/usr/bin/python3
-#from utils import brick
 from utils.brick import Motor, reset_brick, wait_ready_sensors, EV3ColorSensor, EV3UltrasonicSensor, TouchSensor, EV3GyroSensor
-import brickpi3
 import time
-import classify
-import room_search
-import room_search_1
-import mailroom
-import mailroom2
+import color_classifier
+import office_delivery
+import return_to_mailroom
 
 RIGHT_WHEEL = Motor("C")
 LEFT_WHEEL = Motor("B")
@@ -73,7 +69,7 @@ while True:
             time.sleep(0.005)
             r, g, b = C_sens.get_rgb()
             intensity = r + g + b
-            color = classify.classify_it(r, g, b, intensity)
+            color = color_classifier.classify_it(r, g, b, intensity)
             return color
 
         def turn_corner():
@@ -117,7 +113,7 @@ while True:
             distance = U_sens.get_value()
             
             if (package_counter > 1):
-                mailroom2.mailroom2()
+                return_to_mailroom.mailroom2()
                 
             if (ANGLE_COUNTER == 0):
                 angle = G_sens.get_abs_measure()
@@ -174,7 +170,7 @@ while True:
                     RIGHT_WHEEL.set_power(0)
                     LEFT_WHEEL.set_power(0)
                     time.sleep(0.2)
-                    package_dropped = package_counter + room_search_1.room_search()
+                    package_dropped = package_counter + office_delivery.room_search()
                     print(package_dropped)
                     package_counter = package_counter + package_dropped
                     print("counter", package_counter)
